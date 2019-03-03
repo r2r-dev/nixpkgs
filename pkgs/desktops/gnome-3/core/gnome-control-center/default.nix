@@ -8,17 +8,18 @@
 , fontconfig, sound-theme-freedesktop, grilo, python3
 , gtk3, glib, glib-networking, gsettings-desktop-schemas
 , gnome-desktop, gnome-settings-daemon, gnome-online-accounts
-, vino, gnome-bluetooth, tracker, adwaita-icon-theme }:
+, vino, gnome-bluetooth, tracker, adwaita-icon-theme
+, udisks2, gsound, libhandy, cups }:
 
 let
   pname = "gnome-control-center";
-  version = "3.30.3";
+  version = "3.32.1";
 in stdenv.mkDerivation rec {
   name = "${pname}-${version}";
 
   src = fetchurl {
     url = "mirror://gnome/sources/${pname}/${stdenv.lib.versions.majorMinor version}/${name}.tar.xz";
-    sha256 = "0gih1cmqbv803kp30704sllghb0impa0mmv3j8pndfg4zr2mnq9r";
+    sha256 = "0xpcmwgnn29syi2kfxc8233a5f3j8cij5wcn76xmsmwxvxz5r85l";
   };
 
   nativeBuildInputs = [
@@ -34,6 +35,7 @@ in stdenv.mkDerivation rec {
     grilo libpwquality cracklib vino libcanberra-gtk3 libgudev libsecret
     gdk_pixbuf adwaita-icon-theme librsvg clutter clutter-gtk cheese
     networkmanager modemmanager gnome-bluetooth tracker
+    udisks2 gsound libhandy
   ];
 
   patches = [
@@ -41,6 +43,7 @@ in stdenv.mkDerivation rec {
       src = ./paths.patch;
       gcm = gnome-color-manager;
       inherit glibc libgnomekbd tzdata;
+      inherit cups networkmanagerapplet;
     })
   ];
 
