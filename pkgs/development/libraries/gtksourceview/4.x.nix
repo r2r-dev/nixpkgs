@@ -29,7 +29,7 @@ stdenv.mkDerivation rec {
 
   enableParallelBuilding = true;
 
-  doCheck = false; # FIXME
+  doCheck = stdenv.isLinux;
   checkPhase = ''
     NO_AT_BRIDGE=1 \
     XDG_DATA_DIRS="$XDG_DATA_DIRS:${shared-mime-info}/share" \
