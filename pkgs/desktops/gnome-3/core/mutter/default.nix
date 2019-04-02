@@ -1,11 +1,12 @@
 { fetchurl, substituteAll, stdenv, pkgconfig, gnome3, gettext, gobject-introspection, upower, cairo
 , pango, cogl, clutter, libstartup_notification, zenity, libcanberra-gtk3
-, ninja, makeWrapper, xkeyboard_config, libxkbfile, libxkbcommon, libXtst, libinput
+, ninja, xkeyboard_config, libxkbfile, libxkbcommon, libXtst, libinput
 , gsettings-desktop-schemas, glib, gtk3, gnome-desktop
 , geocode-glib, pipewire, libgudev, libwacom, xwayland, meson
 , gnome-settings-daemon
 , xorgserver
 , python3
+, wrapGAppsHook
 }:
 
 stdenv.mkDerivation rec {
@@ -31,10 +32,10 @@ stdenv.mkDerivation rec {
     pkgconfig
     gettext
     ninja
-    makeWrapper
     python3
     # for cvt command
     xorgserver
+    wrapGAppsHook
   ];
 
   buildInputs = [
@@ -59,11 +60,6 @@ stdenv.mkDerivation rec {
 
   postInstall = ''
     ${glib.dev}/bin/glib-compile-schemas "$out/share/glib-2.0/schemas"
-  '';
-
-  preFixup = ''
-    wrapProgram "$out/bin/mutter" \
-      --prefix XDG_DATA_DIRS : "$GSETTINGS_SCHEMAS_PATH"
   '';
 
   enableParallelBuilding = true;
