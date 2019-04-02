@@ -37,6 +37,7 @@ stdenv.mkDerivation rec {
   meta = with stdenv.lib; {
     description = "GNOME Shell TaskWarrior GUI";
     license = licenses.gpl3Plus;
+    broken = true; # Likely broken https://github.com/cinatic/taskwhisperer/issues/60
     maintainers = with maintainers; [ jonafato ];
     homepage = https://github.com/cinatic/taskwhisperer;
   };
