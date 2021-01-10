@@ -11,10 +11,10 @@ index d22b3b45..c0b24f5e 100644
  common-obj-y += accel/
  common-obj-y += migration/
 diff --git a/configure b/configure
-index 2acc4d14..f5a58128 100755
+index 2acc4d14..59195e35 100755
 --- a/configure
 +++ b/configure
-@@ -6646,16 +6646,28 @@ if test "$want_tools" = "yes" ; then
+@@ -6646,16 +6646,27 @@ if test "$want_tools" = "yes" ; then
    fi
  fi
  if test "$softmmu" = yes ; then
@@ -33,7 +33,7 @@ index 2acc4d14..f5a58128 100755
 +      fi
 +    elif test "$darwin" = yes; then
        virtfs=yes
-       helpers="$helpers fsdev/virtfs-proxy-helper\$(EXESUF)"
+-      helpers="$helpers fsdev/virtfs-proxy-helper\$(EXESUF)"
      else
        if test "$virtfs" = yes; then
 -        error_exit "VirtFS requires libcap-ng devel and libattr devel"
@@ -46,7 +46,7 @@ index 2acc4d14..f5a58128 100755
      if test "$mpath" != no && test "$mpathpersist" = yes ; then
        mpath=yes
      else
-@@ -6666,10 +6678,6 @@ if test "$softmmu" = yes ; then
+@@ -6666,10 +6677,6 @@ if test "$softmmu" = yes ; then
      fi
      helpers="$helpers scsi/qemu-pr-helper\$(EXESUF)"
    else
