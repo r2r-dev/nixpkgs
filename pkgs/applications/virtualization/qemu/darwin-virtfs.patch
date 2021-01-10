@@ -1,0 +1,59 @@
+diff --git a/Makefile.objs b/Makefile.objs
+index d22b3b45..c0b24f5e 100644
+--- a/Makefile.objs
++++ b/Makefile.objs
+@@ -52,6 +52,7 @@ common-obj-$(CONFIG_WIN32) += os-win32.o
+ common-obj-$(CONFIG_POSIX) += os-posix.o
+ 
+ common-obj-$(CONFIG_LINUX) += fsdev/
++common-obj-$(CONFIG_DARWIN) += fsdev/
+ 
+ common-obj-y += accel/
+ common-obj-y += migration/
+diff --git a/configure b/configure
+index 2acc4d14..f5a58128 100755
+--- a/configure
++++ b/configure
+@@ -6646,16 +6646,28 @@ if test "$want_tools" = "yes" ; then
+   fi
+ fi
+ if test "$softmmu" = yes ; then
+-  if test "$linux" = yes; then
+-    if test "$virtfs" != no && test "$cap_ng" = yes && test "$attr" = yes ; then
++  if test "$virtfs" != no; then
++    if test "$linux" = yes; then
++      if test "$cap_ng" = yes && test "$attr" = yes ; then
++        virtfs=yes
++        tools="$tools fsdev/virtfs-proxy-helper\$(EXESUF)"
++      else
++        if test "$virtfs" = yes; then
++          error_exit "VirtFS requires libcap devel and libattr devel under Linux"
++        fi
++        virtfs=no
++      fi
++    elif test "$darwin" = yes; then
+       virtfs=yes
+       helpers="$helpers fsdev/virtfs-proxy-helper\$(EXESUF)"
+     else
+       if test "$virtfs" = yes; then
+-        error_exit "VirtFS requires libcap-ng devel and libattr devel"
++        error_exit "VirtFS is supported only on Linux and Darwin"
+       fi
+       virtfs=no
+     fi
++  fi
++  if test "$linux" = yes; then
+     if test "$mpath" != no && test "$mpathpersist" = yes ; then
+       mpath=yes
+     else
+@@ -6666,10 +6678,6 @@ if test "$softmmu" = yes ; then
+     fi
+     helpers="$helpers scsi/qemu-pr-helper\$(EXESUF)"
+   else
+-    if test "$virtfs" = yes; then
+-      error_exit "VirtFS is supported only on Linux"
+-    fi
+-    virtfs=no
+     if test "$mpath" = yes; then
+       error_exit "Multipath is supported only on Linux"
+     fi

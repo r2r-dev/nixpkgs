@@ -83,6 +83,8 @@ stdenv.mkDerivation rec {
     ./fix-qemu-ga.patch
     ./9p-ignore-noatime.patch
     ./CVE-2020-27617.patch
+    # From https://patchwork.kernel.org/project/qemu-devel/patch/6619399bfc7df3fdd4d2f5b78ed28b1e95fce1c9.1529196703.git.keno@juliacomputing.com/
+    ./darwin-virtfs.patch
     (fetchpatch {
       # e1000e: infinite loop scenario in case of null packet descriptor, remove for QEMU >= 5.2.0-rc3
       name = "CVE-2020-28916.patch";
