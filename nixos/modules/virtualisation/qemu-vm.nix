@@ -7,7 +7,7 @@
 # the VM in the host.  On the other hand, the root filesystem is a
 # read/writable disk image persistent across VM reboots.
 
-{ config, lib, pkgs, ... }:
+{ options, config, lib, pkgs, ... }:
 
 with lib;
 with import ../../lib/qemu-flags.nix { inherit pkgs; };
@@ -106,7 +106,9 @@ let
   # Shell script to start the VM.
   startVM =
     ''
-      #! ${pkgs.runtimeShell}
+      #! ${cfg.qemu.pkgs.runtimeShell}
+
+      export PATH=${makeBinPath [ cfg.qemu.pkgs.coreutils ]}''${PATH:+:}$PATH
 
       NIX_DISK_IMAGE=$(readlink -f ''${NIX_DISK_IMAGE:-${config.virtualisation.diskImage}})
 
@@ -402,10 +404,22 @@ in
       };
 
     virtualisation.qemu = {
+      pkgs = mkOption {
+        type = options.nixpkgs.pkgs.type;
+        default = pkgs;
+        defaultText = "pkgs";
+        example = literalExample ''
+          import pkgs.path { system = "x86_64-darwin"; }
+        '';
+        description = ''
+          pkgs set to use for the host-specific packages of the vm runner.
+          Changing this to e.g. a Darwin package set allows running NixOS VMs on Darwin.
+        '';
+      };
       package =
         mkOption {
           type = types.package;
-          default = pkgs.qemu;
+          default = cfg.qemu.pkgs.qemu;
           example = "pkgs.qemu_test";
           description = "QEMU package to use.";
         };
@@ -711,11 +725,11 @@ in
 
     services.qemuGuest.enable = cfg.qemu.guestAgent.enable;
 
-    system.build.vm = pkgs.runCommand "nixos-vm" { preferLocalBuild = true; }
+    system.build.vm = cfg.qemu.pkgs.runCommand "nixos-vm" { preferLocalBuild = true; }
       ''
         mkdir -p $out/bin
         ln -s ${config.system.build.toplevel} $out/system
-        ln -s ${pkgs.writeScript "run-nixos-vm" startVM} $out/bin/run-${config.system.name}-vm
+        ln -s ${cfg.qemu.pkgs.writeScript "run-nixos-vm" startVM} $out/bin/run-${config.system.name}-vm
       '';
 
     # When building a regular system configuration, override whatever
