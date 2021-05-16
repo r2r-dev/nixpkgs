@@ -633,8 +633,8 @@ in
         mkdir -p $targetRoot/boot
 
         ${optionalString cfg.writableStore ''
-          echo "mounting overlay filesystem on /nix/store..."
-          mkdir -p 0755 $targetRoot/nix/.rw-store/store $targetRoot/nix/.rw-store/work $targetRoot/nix/store
+          echo "mounting overlayz filesystem on /nix/store..."
+          mkdir -m 0755 -p $targetRoot/nix/.rw-store/store $targetRoot/nix/.rw-store/work $targetRoot/nix/store
           mount -t overlay overlay $targetRoot/nix/store \
             -o lowerdir=$targetRoot/nix/.ro-store,upperdir=$targetRoot/nix/.rw-store/store,workdir=$targetRoot/nix/.rw-store/work || fail
         ''}
@@ -740,7 +740,7 @@ in
           if cfg.shareNixStore then {
             device = "store";
             fsType = "9p";
-            options = [ "trans=virtio" "version=9p2000.L" "cache=loose" ] ++ lib.optional (cfg.msize != null) "msize=${toString cfg.msize}";
+            options = [ "trans=virtio" "version=9p2000.L" "cache=none" "msize=262144" ];
             neededForBoot = true;
           } else {
             device = lookupDriveDeviceName "nixstore" cfg.qemu.drives;

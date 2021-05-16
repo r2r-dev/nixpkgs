@@ -28,11 +28,14 @@ lib.makeScopeWithSplicing splicePackages newScope otherSplices (_: {}) (spliced:
     inherit (buildPackages.darwin) print-reexports;
     inherit (self) darwin-stubs;
   };
+
+  apple_sdk_11 = pkgs.callPackage ../os-specific/darwin/apple-sdk-11.0 { };
 in
 
 impure-cmds // apple-source-releases // {
 
   inherit apple_sdk;
+  inherit apple_sdk_11;
 
   stdenvNoCF = stdenv.override {
     extraBuildInputs = [];
@@ -69,6 +72,8 @@ impure-cmds // apple-source-releases // {
   darwin-stubs = callPackage ../os-specific/darwin/darwin-stubs { };
 
   print-reexports = callPackage ../os-specific/darwin/apple-sdk/print-reexports { };
+rewrite-tbd = callPackage ../os-specific/darwin/rewrite-tbd { };
+
 
   maloader = callPackage ../os-specific/darwin/maloader {
   };

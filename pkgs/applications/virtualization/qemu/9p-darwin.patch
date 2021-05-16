@@ -494,7 +494,7 @@ index 2320004308..63155dee71 100644
 +   user space header, but looking at the kernel source, HFS supports
 +   up to INT32_MAX, so use that as the maximum.
 +*/
-+#define XATTR_SIZE_MAX INT32_MAX
++#define XATTR_SIZE_MAX 65536
 +#endif
  static void coroutine_fn v9fs_xattrcreate(void *opaque)
  {

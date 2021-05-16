@@ -1,0 +1,13 @@
+diff --git a/target/i386/hvf/hvf.c b/target/i386/hvf/hvf.c
+index 15f14ac..154fb07 100644
+--- a/target/i386/hvf/hvf.c
++++ b/target/i386/hvf/hvf.c
+@@ -830,7 +830,7 @@ int hvf_vcpu_exec(CPUState *cpu)
+ 
+             if (rax == 1) {
+                 /* CPUID1.ecx.OSXSAVE needs to know CR4 */
+-                env->cr[4] = rvmcs(cpu->hvf_fd, VMCS_GUEST_CR4);
++                env->cr[4] = rvmcs(cpu->hvf->fd, VMCS_GUEST_CR4);
+             }
+             hvf_cpu_x86_cpuid(env, rax, rcx, &rax, &rbx, &rcx, &rdx);
+ 
