@@ -8,8 +8,8 @@ let
 
     # https://swscan.apple.com/content/catalogs/others/index-10.16.merged-1.sucatalog
     src = fetchurl {
-      url = "http://swcdn.apple.com/content/downloads/50/51/071-29699-A_YC8SX0OHH3/7479xojqghsvgtnt3dxjpnxuz9sjpmbmds/CLTools_macOSNMOS_SDK.pkg";
-      sha256 = "6faff385985c1dad1bfc4eb24bc83b779ff5ac8ebbd5055c9c6381386048df2d";
+      url = "http://swcdn.apple.com/content/downloads/46/21/001-89745-A_56FM390IW5/v1um2qppgfdnam2e9cdqcqu2r6k8aa3lis/CLTools_macOSNMOS_SDK.pkg";
+      sha256 = "0n425smj4q1vxbza8fzwnk323fyzbbq866q32w288c44hl5yhwsf";
     };
 
     dontBuild = true;
@@ -24,7 +24,7 @@ let
     '';
 
     installPhase = ''
-      cd Library/Developer/CommandLineTools/SDKs/MacOSX11.0.sdk
+      cd Library/Developer/CommandLineTools/SDKs/MacOSX11.1.sdk
 
       mkdir $out
       cp -r System usr $out/
