@@ -8,8 +8,8 @@ let
 
     # https://swscan.apple.com/content/catalogs/others/index-10.16.merged-1.sucatalog
     src = fetchurl {
-      url = "http://swcdn.apple.com/content/downloads/58/37/001-75138-A_59RXKDS8YM/12ksm19hgzscfc7cau3yhecz4vpkps7wbq/CLTools_macOSNMOS_SDK.pkg";
-      sha256 = "0n51ba926ckwm62w5c8lk3w5hj4ihk0p5j02321qi75wh824hl8m";
+      url = "http://swcdn.apple.com/content/downloads/02/62/071-54303-A_EU2CL1YVT7/943i95dpeyi2ghlnj2mgyq3t202t5gf18b/CLTools_macOSNMOS_SDK.pkg";
+      sha256 = "ec0e70de35ac8c09868eee0a88b52c1c6992fb3ed825de5e3054c80ea5bb3481";
     };
 
     dontBuild = true;
