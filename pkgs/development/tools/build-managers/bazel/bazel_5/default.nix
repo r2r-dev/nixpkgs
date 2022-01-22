@@ -177,6 +177,8 @@ stdenv.mkDerivation rec {
     # we accept this fact because xcode_locator is only a short-lived process used during the build.
     ./no-arc.patch
 
+    ./osx_cc_configure_no_arm64.patch
+
     # --experimental_strict_action_env (which may one day become the default
     # see bazelbuild/bazel#2574) hardcodes the default
     # action environment to a non hermetic value (e.g. "/usr/local/bin").
@@ -456,6 +458,9 @@ stdenv.mkDerivation rec {
       build --verbose_failures
       build --curses=no
       build --sandbox_debug
+      ${lib.optionalString stdenv.hostPlatform.isDarwin ''
+        build --incompatible_generated_protos_in_virtual_imports=false
+      ''}
       EOF
 
       
@@ -469,7 +474,8 @@ stdenv.mkDerivation rec {
 
       EOF
       # add the same environment vars to compile.sh
-      sed -e "/\$command \\\\$/a --copt=\"$(echo $NIX_CFLAGS_COMPILE | sed -e 's/ /" --copt=\"/g')\" \\\\" \
+      sed -i scripts/bootstrap/compile.sh \
+          -e "/\$command \\\\$/a --copt=\"$(echo $NIX_CFLAGS_COMPILE | sed -e 's/ /" --copt=\"/g')\" \\\\" \
           -e "/\$command \\\\$/a --host_copt=\"$(echo $NIX_CFLAGS_COMPILE | sed -e 's/ /" --host_copt=\"/g')\" \\\\" \
           -e "/\$command \\\\$/a --linkopt=\"$(echo $(< ${stdenv.cc}/nix-support/libcxx-ldflags) | sed -e 's/ /" --linkopt=\"/g')\" \\\\" \
           -e "/\$command \\\\$/a --host_linkopt=\"$(echo $(< ${stdenv.cc}/nix-support/libcxx-ldflags) | sed -e 's/ /" --host_linkopt=\"/g')\" \\\\" \
@@ -480,7 +486,10 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --verbose_failures \\\\" \
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
-          -i scripts/bootstrap/compile.sh
+          -e "/\$command \\\\$/a --jobs=1 \\\\" \
+          ${lib.optionalString stdenv.hostPlatform.isDarwin ''
+             -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
+          ''}
 
       # This is necessary to avoid:
       # "error: no visible @interface for 'NSDictionary' declares the selector

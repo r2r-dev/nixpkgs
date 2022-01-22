@@ -1,0 +1,14 @@
+diff --git a/tools/cpp/osx_cc_configure.bzl b/tools/cpp/osx_cc_configure.bzl
+index 4bfa61807a..1e7bbaff5a 100644
+--- a/tools/cpp/osx_cc_configure.bzl
++++ b/tools/cpp/osx_cc_configure.bzl
+@@ -98,8 +98,6 @@ def _compile_cc_file(repository_ctx, src_name, out_name):
+         "-std=c++11",
+         "-lc++",
+         "-arch",
+-        "arm64",
+-        "-arch",
+         "x86_64",
+         "-Wl,-no_adhoc_codesign",
+         "-Wl,-no_uuid",
+
