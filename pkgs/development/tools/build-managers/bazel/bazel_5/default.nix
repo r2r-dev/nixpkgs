@@ -458,9 +458,7 @@ stdenv.mkDerivation rec {
       build --verbose_failures
       build --curses=no
       build --sandbox_debug
-      ${lib.optionalString stdenv.hostPlatform.isDarwin ''
-        build --incompatible_generated_protos_in_virtual_imports=false
-      ''}
+      build --incompatible_generated_protos_in_virtual_imports=false
       EOF
 
       
@@ -487,9 +485,7 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
           -e "/\$command \\\\$/a --jobs=1 \\\\" \
-          ${lib.optionalString stdenv.hostPlatform.isDarwin ''
-             -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
-          ''}
+          -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
 
       # This is necessary to avoid:
       # "error: no visible @interface for 'NSDictionary' declares the selector
