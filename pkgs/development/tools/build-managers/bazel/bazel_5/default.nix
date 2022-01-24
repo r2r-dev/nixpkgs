@@ -463,6 +463,7 @@ stdenv.mkDerivation rec {
       build --incompatible_generated_protos_in_virtual_imports=false
       build --copt=-DGRPC_BAZEL_BUILD
       build --subcommands
+      build --features=-use_module_maps
       EOF
 
       
@@ -490,6 +491,7 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
           -e "/\$command \\\\$/a --subcommands  \\\\" \
+          -e "/\$command \\\\$/a --features=-use_module_maps \\\\" \
           -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
 
       # This is necessary to avoid:
