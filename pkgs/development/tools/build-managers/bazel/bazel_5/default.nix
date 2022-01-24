@@ -178,6 +178,7 @@ stdenv.mkDerivation rec {
     ./no-arc.patch
 
     ./osx_cc_configure_no_arm64.patch
+    ./cpp_includes.patch
 
     # --experimental_strict_action_env (which may one day become the default
     # see bazelbuild/bazel#2574) hardcodes the default
@@ -484,7 +485,6 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --verbose_failures \\\\" \
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
-          -e "/\$command \\\\$/a --jobs=1 \\\\" \
           -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
 
       # This is necessary to avoid:
