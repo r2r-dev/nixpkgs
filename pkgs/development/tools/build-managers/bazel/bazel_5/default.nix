@@ -461,6 +461,8 @@ stdenv.mkDerivation rec {
       build --curses=no
       build --sandbox_debug
       build --incompatible_generated_protos_in_virtual_imports=false
+      build --copt=-DGRPC_BAZEL_BUILD
+      build --subcommands
       EOF
 
       
@@ -476,6 +478,7 @@ stdenv.mkDerivation rec {
       # add the same environment vars to compile.sh
       sed -i scripts/bootstrap/compile.sh \
           -e "/\$command \\\\$/a --copt=\"$(echo $NIX_CFLAGS_COMPILE | sed -e 's/ /" --copt=\"/g')\" \\\\" \
+          -e "/\$command \\\\$/a --copt=-DGRPC_BAZEL_BUILD \\\\" \
           -e "/\$command \\\\$/a --host_copt=\"$(echo $NIX_CFLAGS_COMPILE | sed -e 's/ /" --host_copt=\"/g')\" \\\\" \
           -e "/\$command \\\\$/a --linkopt=\"$(echo $(< ${stdenv.cc}/nix-support/libcxx-ldflags) | sed -e 's/ /" --linkopt=\"/g')\" \\\\" \
           -e "/\$command \\\\$/a --host_linkopt=\"$(echo $(< ${stdenv.cc}/nix-support/libcxx-ldflags) | sed -e 's/ /" --host_linkopt=\"/g')\" \\\\" \
@@ -486,6 +489,7 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --verbose_failures \\\\" \
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
+          -e "/\$command \\\\$/a --subcommands  \\\\" \
           -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
 
       # This is necessary to avoid:
