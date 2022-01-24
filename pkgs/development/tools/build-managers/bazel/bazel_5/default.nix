@@ -460,10 +460,8 @@ stdenv.mkDerivation rec {
       build --verbose_failures
       build --curses=no
       build --sandbox_debug
-      build --incompatible_generated_protos_in_virtual_imports=false
-      build --copt=-DGRPC_BAZEL_BUILD
       build --subcommands
-      build --features=-use_module_maps,-layering_check
+      build --spawn_strategy=standalone
       EOF
 
       
@@ -490,9 +488,9 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --verbose_failures \\\\" \
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
-          -e "/\$command \\\\$/a --subcommands  \\\\" \
-          -e "/\$command \\\\$/a --features=-use_module_maps,-layering_check \\\\" \
-          -e "/\$command \\\\$/a --incompatible_generated_protos_in_virtual_imports=false \\\\"
+          -e "/\$command \\\\$/a --spawn_strategy=standalone  \\\\" \
+          -e "/\$command \\\\$/a --subcommands  \\\\" 
+ 
 
       # This is necessary to avoid:
       # "error: no visible @interface for 'NSDictionary' declares the selector
