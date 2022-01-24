@@ -58,6 +58,7 @@ let
       srcs.bazel_toolchains
       srcs.com_github_grpc_grpc
       srcs.upb
+      srcs.zlib
       srcs.com_google_protobuf
       srcs.rules_pkg
       srcs.rules_cc
