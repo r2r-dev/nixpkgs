@@ -74,6 +74,31 @@ let
     for i in ${builtins.toString srcDeps}; do cp $i $out/$(stripHash $i); done
   '';
 
+  grpc = stdenv.mkDerivation {
+    inherit sourceRoot;
+
+    name = "com_github_grpc_grpc";
+
+    src = srcDepsSet."com_github_grpc_grpc";
+
+    nativeBuildInputs = [ autoPatchelfHook unzip ];
+    buildInputs = [ gcc-unwrapped ];
+
+
+    patches = [
+      ./grpc_config.patch
+    ];
+
+    buildPhase = ''
+      mkdir $out;
+    '';
+
+    installPhase = ''
+      cp -Ra * $out/
+      touch $out/WORKSPACE
+    '';
+  };
+
   defaultShellUtils =
     # Keep this list conservative. For more exotic tools, prefer to use
     # @rules_nixpkgs to pull in tools from the nix repository. Example:
@@ -462,6 +487,9 @@ stdenv.mkDerivation rec {
       build --sandbox_debug
       build --subcommands
       build --spawn_strategy=standalone
+      build --override_repository=${grpc.name}=${grpc}
+      fetch --override_repository=${grpc.name}=${grpc}
+      query --override_repository=${grpc.name}=${grpc}
       EOF
 
       
@@ -488,10 +516,9 @@ stdenv.mkDerivation rec {
           -e "/\$command \\\\$/a --verbose_failures \\\\" \
           -e "/\$command \\\\$/a --curses=no \\\\" \
           -e "/\$command \\\\$/a --sandbox_debug \\\\" \
-          -e "/\$command \\\\$/a --spawn_strategy=standalone  \\\\" \
+          -e "/\$command \\\\$/a --override_repository=${grpc.name}=${grpc} \\\\" \
           -e "/\$command \\\\$/a --subcommands  \\\\" 
  
-
       # This is necessary to avoid:
       # "error: no visible @interface for 'NSDictionary' declares the selector
       # 'initWithContentsOfURL:error:'"

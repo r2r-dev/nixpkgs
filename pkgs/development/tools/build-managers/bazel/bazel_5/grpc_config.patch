@@ -1,0 +1,14 @@
+diff --git a/grpc-1.41.0/BUILD b/grpc-1.41.0/BUILD
+index 39ee9f97c6..6c01bccf77 100644
+--- a/grpc-1.41.0/BUILD
++++ b/grpc-1.41.0/BUILD
+@@ -801,6 +801,7 @@ grpc_cc_library(
+     ],
+     deps = [
+         "gpr_platform",
++        "gpr_base",
+         "handshaker_registry",
+     ],
+ )
+
+
