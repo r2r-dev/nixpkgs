@@ -549,6 +549,8 @@ stdenv.mkDerivation rec {
   buildPhase = ''
     runHook preBuild
 
+    cat ./bazel_src/tools/osx/BUILD
+    exit 1
     # Increasing memory during compilation might be necessary.
     # export BAZEL_JAVAC_OPTS="-J-Xmx2g -J-Xms200m"
 
